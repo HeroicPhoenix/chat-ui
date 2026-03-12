@@ -42,3 +42,39 @@ npm run build
 ```sh
 npm run lint
 ```
+
+
+## 后端地址配置（重要）
+
+本项目请求地址来自环境变量 `VITE_API_BASE_URL`，代码位置：`src/api/request.js`。
+
+### 1) 新建环境变量文件
+在项目根目录创建 `.env.development`（本地开发）并填写：
+
+```sh
+VITE_API_BASE_URL=http://127.0.0.1:8080
+```
+
+如果后端部署在其他地址（如测试环境），改成对应域名或 IP 即可，例如：
+
+```sh
+VITE_API_BASE_URL=https://api.example.com
+```
+
+> 注意：不要以 `/` 结尾，避免出现双斜杠路径。
+
+### 2) 重启前端服务
+修改环境变量后，需要重启 Vite：
+
+```sh
+npm run dev
+```
+
+### 3) 可选：生产环境
+生产构建可在 `.env.production` 中设置：
+
+```sh
+VITE_API_BASE_URL=https://api.example.com
+```
+
+也可参考仓库中的 `.env.example` 作为模板。

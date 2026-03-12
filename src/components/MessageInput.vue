@@ -42,10 +42,8 @@ async function handleChooseFile(event) {
     />
 
     <div class="message-toolbar">
-      <div>
-        <input ref="fileRef" type="file" hidden @change="handleChooseFile" />
-        <button class="btn btn-light" @click="fileRef?.click()">发送文件</button>
-      </div>
+      <input ref="fileRef" type="file" hidden @change="handleChooseFile" />
+      <button class="btn btn-light" @click="fileRef?.click()">发送文件</button>
 
       <button class="btn btn-primary" @click="handleSend">
         {{ sending ? '发送中...' : '发送消息' }}
