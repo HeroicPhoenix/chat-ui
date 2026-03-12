@@ -1,0 +1,68 @@
+<script setup>
+const errorText = ref('')
+
+const form = reactive({
+  username: '',
+  password: '',
+  nickname: ''
+})
+
+async function handleRegister() {
+  errorText.value = ''
+  if (!form.username || !form.password) {
+    errorText.value = '用户名和密码不能为空'
+    return
+  }
+
+  loading.value = true
+  try {
+    await registerApi(form)
+    router.push('/login')
+  } catch (error) {
+    errorText.value = error?.message || '注册失败'
+  } finally {
+    loading.value = false
+  }
+}
+</script>
+
+<template>
+  <div class="auth-page page-shell">
+    <div class="card auth-card">
+      <h1 class="auth-title">创建账号</h1>
+      <p class="auth-subtitle">注册后即可创建会话并发送消息</p>
+
+      <div class="form-item">
+        <label class="form-label">昵称</label>
+        <input v-model.trim="form.nickname" class="input" placeholder="请输入昵称" />
+      </div>
+
+      <div class="form-item">
+        <label class="form-label">用户名</label>
+        <input v-model.trim="form.username" class="input" placeholder="请输入用户名" />
+      </div>
+
+      <div class="form-item">
+        <label class="form-label">密码</label>
+        <input
+          v-model.trim="form.password"
+          class="input"
+          type="password"
+          placeholder="请输入密码"
+          @keyup.enter="handleRegister"
+        />
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%" :disabled="loading" @click="handleRegister">
+        {{ loading ? '注册中...' : '注册' }}
+      </button>
+
+      <div v-if="errorText" class="form-error">{{ errorText }}</div>
+
+      <div style="margin-top: 18px; color: var(--text-secondary); font-size: 14px">
+        已有账号？
+        <RouterLink to="/login" style="color: var(--primary); font-weight: 600">去登录</RouterLink>
+      </div>
+    </div>
+  </div>
+</template>
