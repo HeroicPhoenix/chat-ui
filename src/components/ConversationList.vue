@@ -19,10 +19,14 @@ function getTitle(item) {
 function getId(item) {
   return item.id || item.conversationId
 }
+
+function getMemberCount(item) {
+  return item.memberCount || item.members?.length || 0
+}
 </script>
 
 <template>
-  <div class="conversation-scroll" style="padding: 12px; flex: 1">
+  <div class="conversation-scroll">
     <div
       v-for="item in conversations"
       :key="getId(item)"
@@ -30,9 +34,10 @@ function getId(item) {
       :class="{ active: String(activeConversationId) === String(getId(item)) }"
       @click="emit('select', item)"
     >
-      <div style="font-weight: 700; font-size: 15px; margin-bottom: 6px">{{ getTitle(item) }}</div>
-      <div style="font-size: 12px; color: var(--text-secondary)">
-        ID：{{ getId(item) }}
+      <div class="conversation-name">{{ getTitle(item) }}</div>
+      <div class="conversation-meta">
+        <span>ID: {{ getId(item) }}</span>
+        <span>成员 {{ getMemberCount(item) }}</span>
       </div>
     </div>
   </div>

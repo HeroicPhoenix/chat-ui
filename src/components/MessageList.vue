@@ -1,10 +1,39 @@
 <script setup>
+import { nextTick, ref, watch } from 'vue'
+import { getFileExtension } from '../utils/file'
+import { formatTime } from '../utils/time'
+
+const props = defineProps({
+  messages: {
+    type: Array,
+    default: () => []
+  },
+  currentUserId: {
+    type: [Number, String],
+    default: ''
+  }
+})
+
+const scrollRef = ref(null)
+
 function getContent(item) {
   return item.content || item.text || ''
 }
 
+function getMessageType(item) {
+  return String(item.messageType || item.type || 'TEXT').toUpperCase()
+}
+
 function getSenderName(item) {
   return item.senderNickname || item.senderName || item.senderUsername || '用户'
+}
+
+function getSenderId(item) {
+  return item.senderId || item.fromUserId || item.userId
+}
+
+function isMine(item) {
+  return String(getSenderId(item)) === String(props.currentUserId)
 }
 
 function getTime(item) {
@@ -27,16 +56,16 @@ watch(
       scrollRef.value.scrollTop = scrollRef.value.scrollHeight
     }
   },
-  { deep: true }
+  { deep: true, immediate: true }
 )
 </script>
 
 <template>
-  <div ref="scrollRef" class="message-scroll panel-body" style="flex: 1">
+  <div ref="scrollRef" class="message-scroll panel-body">
     <div class="message-list">
       <div
         v-for="item in messages"
-        :key="item.id || item.messageId"
+        :key="item.id || item.messageId || `${getSenderId(item)}-${item.createTime}`"
         class="message-row"
         :class="isMine(item) ? 'mine' : 'other'"
       >
@@ -46,13 +75,8 @@ watch(
               <div class="file-card">
                 <div class="file-icon">{{ getFileExtension(getFileName(item)).slice(0, 4) }}</div>
                 <div>
-                  <div style="font-weight: 600">{{ getFileName(item) }}</div>
-                  <a
-                    v-if="getFileUrl(item)"
-                    :href="getFileUrl(item)"
-                    target="_blank"
-                    style="font-size: 13px; color: inherit; opacity: 0.9"
-                  >
+                  <div class="file-name">{{ getFileName(item) }}</div>
+                  <a v-if="getFileUrl(item)" :href="getFileUrl(item)" target="_blank" class="file-link">
                     点击查看 / 下载
                   </a>
                 </div>

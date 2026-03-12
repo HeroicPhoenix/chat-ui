@@ -36,7 +36,7 @@ async function handleLogin() {
   <div class="auth-page page-shell">
     <div class="card auth-card">
       <h1 class="auth-title">欢迎回来</h1>
-      <p class="auth-subtitle">登录你的聊天系统，继续和好友交流</p>
+      <p class="auth-subtitle">登录后可创建会话、发送文本和文件</p>
 
       <div class="form-item">
         <label class="form-label">用户名</label>
@@ -60,9 +60,9 @@ async function handleLogin() {
 
       <div v-if="errorText" class="form-error">{{ errorText }}</div>
 
-      <div style="margin-top: 18px; color: var(--text-secondary); font-size: 14px">
+      <div class="auth-switch">
         还没有账号？
-        <RouterLink to="/register" style="color: var(--primary); font-weight: 600">立即注册</RouterLink>
+        <RouterLink to="/register" class="link">去注册</RouterLink>
       </div>
     </div>
   </div>

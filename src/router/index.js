@@ -37,7 +37,7 @@ router.beforeEach(async (to) => {
   if (userStore.isLogin && !userStore.userInfo && to.path !== '/login') {
     try {
       await userStore.fetchMe()
-    } catch (error) {
+    } catch {
       userStore.clearLogin()
       return '/login'
     }
